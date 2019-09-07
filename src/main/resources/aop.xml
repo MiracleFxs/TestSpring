@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<bean id="hello" class="aop.Hello" />
+	<bean id="logHandler" class="aop.LogHandler" />
+
+	<aop:config>
+
+		<aop:aspect id="log" ref="logHandler">
+		    <!-- aop:pointcut定义切入点  *(..)表示aop包Hello类的所有方法 -->
+			<aop:pointcut id="printLog"
+				expression="execution(* aop.Hello.*(..))" />
+			<!-- aop:before、aop:after定义切入点之前、之后个bean实例的两个方法."之前之后"是logHandler这定义切入点之前、之后-->
+			<aop:before method="LogBefore" pointcut-ref="printLog" />
+			<aop:after method="LogAfter" pointcut-ref="printLog" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>
